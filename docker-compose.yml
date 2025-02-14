@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: telegram-bot
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/botdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123321
+      - TELEGRAM_BOT_USERNAME=telegram_bot_username_here
+      - TELEGRAM_BOT_TOKEN=telegram_bot_token_here
+    volumes:
+      - ./upload:/app/upload
+
+  db:
+    image: postgres:14-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=botdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123321
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
